@@ -1,5 +1,4 @@
 # 🌍 GeoGame: Where Are We?
-**GMT 458 – Web GIS - Assignment 2**
 
 This project is an interactive geography guessing game developed for the GMT 458 course. It utilizes the **OpenLayers**, **Chart.js**, and **GSAP** libraries to create a polished, data-driven web application.
 
