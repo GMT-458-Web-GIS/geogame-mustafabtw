@@ -13,9 +13,7 @@ Oyun, modern ve karanlık bir tema üzerine kurulmuştur. Kullanıcı arayüzü,
 
 | Intro Ekranı | Ana Menü | Oyun Ekranı (İpucu ile) | Oyun Sonu (Skor) |
 | :---: | :---: | :---: | :---: |
-| *[Buraya Intro ekran görüntüsünü sürükle]* | *[Buraya Ana Menü ekran görüntüsünü sürükle]* | *[Buraya Oyun ekran görüntüsünü sürükle]* | *[Buraya Skor ekran görüntüsünü sürükle]* |
-
----
+| *[<img width="1860" height="830" alt="intro_ss" src="https://github.com/user-attachments/assets/72941f20-3df3-4a22-8b26-d7e5a4c6a91c" />]* | *[<img width="1857" height="881" alt="main_menu_ss" src="https://github.com/user-attachments/assets/a2a52410-62cd-4b65-88c3-5fff6aca1eb4" />]* | *[<img width="1862" height="878" alt="game_ss" src="https://github.com/user-attachments/assets/e5d76f28-388c-4a79-b2bf-a7f9e9109ee0" />]* | *[<img width="1867" height="893" alt="scoreboard_ss" src="https://github.com/user-attachments/assets/ad6e234d-aa65-405d-83bc-1db81f16871f" />]* |
 
 ### 🎯 Proje Gereksinimleri ve Mekanikleri
 
