@@ -30,9 +30,7 @@ The game is built on a modern, dark theme. The user interface is designed to be 
 
 ---
 
-### 🎯 Project Requirements (Assignment Part 1)
-
-This section details the game's core mechanics as required for the 17 November design phase.
+### 🎯 Project Requirements 
 
 #### 1. How the game will progress
 The game is a time- and life-based challenge.
