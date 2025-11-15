@@ -15,9 +15,7 @@ The game is built on a modern, dark theme. The user interface is designed to be 
 | :---: | :---: | :---: | :---: | :---: |
 | <img width="1860" height="830" alt="intro_ss" src="https://github.com/user-attachments/assets/72941f20-3df3-4a22-8b26-d7e5a4c6a91c" /> | <img width="1857" height="881" alt="main_menu_ss" src="https://github.com/user-attachments/assets/a2a52410-62cd-4b65-88c3-5fff6aca1eb4" /> | <img width="1862" height="878" alt="game_ss" src="https://github.com/user-attachments/assets/e5d76f28-388c-4a79-b2bf-a7f9e9109ee0" /> | <img width="1867" height="897" alt="settings_ss" src="https://github.com/user-attachments/assets/6ad40a87-cf76-411f-b2b9-6e8a8b7a73af" /> | <img width="1867" height="893" alt="scoreboard_ss" src="https://github.com/user-attachments/assets/ad6e234d-aa65-405d-83bc-1db81f16871f" /> |
 
-### 🎯 Project Requirements & Mechanics (Assignment Part 1)
-
-This section details the game's mechanics and answers the questions required for the 17 November design phase of the assignment.
+### 🎯 Project Requirements & Mechanics 
 
 #### 1. How the game will progress
 The game is a time- and life-based challenge.
