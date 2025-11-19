@@ -6,21 +6,194 @@ body, html {
 input, button { font-family: 'Inter', sans-serif; }
 #map { width: 100%; height: 100%; background-color: #050505; }
 
-/* --- Başlat Menüsü --- */
+/* --- YENİ ANİMASYON (Arka plan akışı için) --- */
+@keyframes scroll-bg {
+    from { background-position: 0 0; }
+    to { background-position: 300px 0; }
+}
+
+/* --- Başlat Menüsü (DÜZENLENDİ: Akan Arka Plan) --- */
 .overlay-screen {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.8); display: flex; flex-direction: column;
+    background: rgba(0, 0, 0, 0.8); 
+    display: flex; flex-direction: column;
     align-items: center; justify-content: center; z-index: 2000; transition: opacity 0.5s ease;
 }
-.game-title { font-weight: 700; font-size: 3.5rem; color: #f0f0f0; margin: 0; letter-spacing: 0.5px; text-align: center; }
-.slogan { font-size: 1.1rem; color: #a3a3a3; margin-top: 15px; margin-bottom: 30px; letter-spacing: 0.5px; text-align: center; }
-.menu-buttons { display: flex; gap: 15px; margin-top: 20px; }
-.menu-buttons button {
-    font-weight: 500; font-size: 1rem; padding: 10px 24px; margin: 0; cursor: pointer;
-    border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.7); background: transparent;
-    color: rgba(255, 255, 255, 0.9); transition: all 0.3s ease; width: 150px; text-align: center;
+
+/* Sadece Ana Menüye özel arka plan efekti */
+/* Sadece Ana Menüye özel arka plan efekti */
+#start-menu {
+    background: rgba(0, 0, 0, 0.92); 
+    background-image: repeating-linear-gradient(
+        to right, 
+        rgba(212, 175, 55, 0.05) 0px, 
+        rgba(212, 175, 55, 0.05) 1px, 
+        transparent 1px, 
+        transparent 60px
+    );
+    background-size: 300px 100%;
+    animation: scroll-bg 10s linear infinite;
+    
+    /* HİZALAMA DÜZELTMESİ: */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Dikeyde ortala */
+    align-items: center;     /* Yatayda tam ortala */
+    width: 100%;            /* Genişliği garantiye al */
+    height: 100%;
+    padding: 0;             /* İç boşlukları sıfırla ki kayma yapmasın */
+    margin: 0;
 }
-.menu-buttons button:hover { background: #fff; color: #000; border-color: #fff; }
+
+/* --- PROFESYONEL HUD & UÇAK ANİMASYONU --- */
+.hud-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+    box-sizing: border-box;
+    padding: 20px;
+    z-index: 1;
+    overflow: hidden;
+}
+
+/* 1. Üst Bilgi Çubuğu */
+.hud-top-bar {
+    display: flex; 
+    justify-content: space-between; /* Sol, Orta, Sağ dağılım */
+    align-items: center; /* Dikey ortalama */
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    padding-bottom: 15px;
+    color: rgba(212, 175, 55, 0.8);
+    font-family: 'Courier New', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    width: 100%; /* Genişliği doldur */
+}
+/* LAT/LON kısmını tam ortaya çivilemek için */
+.coords-display {
+    text-align: center;
+    flex-grow: 1; /* Ortadaki boşluğu kaplasın */
+}
+/* Sol ve sağ kısımların genişliğini sabitleyelim ki ortayı itmesinler */
+.sys-status, .version-id {
+    width: 200px; /* Sabit genişlik */
+    flex-shrink: 0;
+}
+.version-id { text-align: right; } /* Sağdakini sağa yasla */
+.blink-dot { color: #2ecc40; animation: blink 2s infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+
+/* 2. Alt Kayan Yazı (Ticker) */
+.hud-footer-bar {
+    position: absolute; bottom: 0; left: 0;
+    width: 100%; height: 35px;
+    background: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(212, 175, 55, 0.1) 50%, rgba(0,0,0,0) 100%);
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
+    display: flex; align-items: center;
+}
+.ticker-wrap { width: 100%; overflow: hidden; }
+.ticker-content {
+    display: inline-block;
+    white-space: nowrap;
+    padding-left: 100%;
+    animation: ticker 25s linear infinite;
+    color: #D4AF37;
+    font-family: 'Courier New', monospace;
+    font-weight: 600; letter-spacing: 4px; font-size: 0.8rem;
+}
+@keyframes ticker {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-100%, 0, 0); }
+}
+
+/* 3. PROFESYONEL UÇAK ANİMASYONU (DÜZELTİLDİ) */
+.animated-plane-container {
+    position: absolute;
+    top: 20%;
+    left: -100px;
+    width: 100px; height: 50px;
+    animation: flyAcross 12s linear infinite;
+    opacity: 0.7;
+    filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.6));
+    /* İçindeki elemanları ortalamak için */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu-flying-plane {
+    width: 40px;
+    transform: rotate(90deg);
+    position: relative;
+    z-index: 2; /* Uçak önde olsun */
+}
+
+.plane-trail {
+    position: absolute;
+    /* Dikey Hizalama: Tam ortaya getirmek için */
+    top: 50%; 
+    transform: translateY(-50%);
+    
+    /* Yatay Hizalama: Uçağa yapıştırmak için */
+    right: 30px; /* Değeri düşürerek uçağa yaklaştırdık */
+    
+    width: 200px; 
+    height: 3px; /* Çizgiyi bir tık kalınlaştırdım daha net görünsün */
+    background: linear-gradient(to left, rgba(212, 175, 55, 0.9), transparent);
+    z-index: 1; /* Çizgi arkada kalsın */
+    border-radius: 2px;
+}
+
+@keyframes flyAcross {
+    0% {
+        left: -150px; top: 60%;
+        transform: scale(0.5) rotate(-5deg);
+        opacity: 0;
+    }
+    20% { opacity: 0.8; }
+    80% { opacity: 0.8; }
+    100% {
+        left: 110%; top: 30%;
+        transform: scale(1.2) rotate(0deg);
+        opacity: 0;
+    }
+}
+
+/* --- Ana Menü İçeriği --- */
+.game-title { font-weight: 700; font-size: 3.5rem; color: #f0f0f0; margin: 0; letter-spacing: 0.5px; text-align: center; text-shadow: 0 4px 10px rgba(0,0,0,0.8); }
+.slogan { font-size: 1.1rem; color: #a3a3a3; margin-top: 15px; margin-bottom: 40px; letter-spacing: 0.5px; text-align: center; }
+.menu-buttons { display: flex; gap: 20px; margin-top: 20px; }
+
+/* Z-Index Ayarı */
+.game-title, .slogan, .menu-buttons {
+    position: relative;
+    z-index: 10;
+}
+
+/* --- Ana Menü Butonları (DÜZENLENDİ: Koyu Gri Tema Uyumu) --- */
+.menu-buttons button {
+    font-weight: 600; font-size: 1rem; padding: 12px 30px; margin: 0; cursor: pointer;
+    border-radius: 4px;
+    border: 2px solid #D4AF37;
+    
+    /* ESKİSİ: background: rgba(0, 0, 0, 0.6); -> Çok siyahtı */
+    /* YENİSİ: Oyunun genel temasına uygun Koyu Gri */
+    background: rgba(26, 26, 26, 0.85); 
+    
+    color: #D4AF37;
+    transition: all 0.3s ease; width: 160px; text-align: center;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.menu-buttons button:hover { 
+    /* Hover durumunda hafif açılan bir gri yapalım ki altın rengiyle çok patlamasın */
+    background: #D4AF37; 
+    color: #1a1a1a; /* Yazı rengini de tam siyah yerine koyu gri yaptık */
+    box-shadow: 0 0 25px rgba(212, 175, 55, 0.5);
+    transform: translateY(-2px);
+}
 
 /* --- Ana Oyun Arayüzü --- */
 #game-ui {
@@ -86,33 +259,33 @@ input, button { font-family: 'Inter', sans-serif; }
 }
 #btn-popup-close:hover { background-color: #777; }
 
-/* --- Özet Ekranı (KÜÇÜLTÜLDÜ) --- */
+/* --- Özet Ekranı --- */
 #summary-screen { z-index: 3000; }
 #summary-box {
     background: #1a1a1a; 
-    padding: 25px; /* Padding azaltıldı */
+    padding: 25px; 
     border-radius: 15px; 
     border: 2px solid #D4AF37;
-    width: 400px; /* Genişlik 500'den 400'e düşürüldü */
+    width: 400px; 
     max-width: 90%; 
     text-align: center; 
     color: #f0f0f0;
     display: flex; flex-direction: column; align-items: center;
 }
-#summary-title { color: #D4AF37; margin-bottom: 5px; font-size: 2.2rem; margin-top: 0; /* Font küçültüldü */ }
+#summary-title { color: #D4AF37; margin-bottom: 5px; font-size: 2.2rem; margin-top: 0; }
 #summary-title.success { color: #2ECC40; }
 #summary-title.fail { color: #FF4136; }
-#summary-reason { font-size: 1.1rem; color: #ccc; margin-bottom: 15px; /* Boşluk azaltıldı */ }
+#summary-reason { font-size: 1.1rem; color: #ccc; margin-bottom: 15px; }
 .summary-stats { 
-    width: 100%; margin: 15px 0; padding: 12px; /* Boşluklar azaltıldı */
+    width: 100%; margin: 15px 0; padding: 12px;
     background: #222; border-radius: 10px; box-sizing: border-box; 
 }
 .stat-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 1rem; }
 .stat-row:last-child { margin-bottom: 0; }
 .highlight-stat { color: #D4AF37; font-weight: 700; font-size: 1.1rem; }
-.chart-container { position: relative; width: 180px; height: 180px; margin: 0 auto 15px auto; /* Grafik biraz küçültüldü */ }
+.chart-container { position: relative; width: 180px; height: 180px; margin: 0 auto 15px auto; }
 #wrong-answers-area { 
-    width: 100%; margin-bottom: 15px; max-height: 120px; /* Yükseklik azaltıldı */
+    width: 100%; margin-bottom: 15px; max-height: 120px; 
     overflow-y: auto; text-align: left; background: rgba(0,0,0,0.2); 
     padding: 10px; border-radius: 8px; box-sizing: border-box; 
 }
@@ -136,7 +309,7 @@ input, button { font-family: 'Inter', sans-serif; }
 
 /* --- Kompakt Ayarlar Menüsü --- */
 #settings-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); display: flex; align-items: center; justify-content: center; z-index: 3000; opacity: 0; pointer-events: none; }
-#settings-box { position: relative; background: #1a1a1a; padding: 10px 25px; border-radius: 10px; color: #f0f0f0; width: 400px; max-width: 90%; border: 1px solid #555; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6); }
+#settings-box { position: relative; background: rgba(26, 26, 26, 0.95); padding: 20px 30px; border-radius: 4px; color: #f0f0f0; width: 450px; max-width: 95%; border: 1px solid #555; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6); }
 #settings-box h2 { text-align: center; margin-top: 0; margin-bottom: 10px; color: #D4AF37; font-size: 1.6rem; }
 .btn-close-popup { position: absolute; top: 10px; right: 10px; width: 30px; height: 30px; padding: 0; font-size: 1.2rem; font-weight: bold; color: #888; background: transparent; border: none; cursor: pointer; transition: color 0.2s; }
 .btn-close-popup:hover { color: #fff; }
@@ -149,43 +322,24 @@ input, button { font-family: 'Inter', sans-serif; }
 input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 8px; background: #444; border-radius: 5px; outline: none; transition: opacity .2s; }
 input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; background: #D4AF37; border-radius: 50%; cursor: pointer; border: 3px solid #1a1a1a; box-shadow: 0 0 5px rgba(0,0,0,0.5); }
 input[type="range"]::-moz-range-thumb { width: 15px; height: 15px; background: #D4AF37; border-radius: 50%; cursor: pointer; border: 3px solid #1a1a1a; box-shadow: 0 0 5px rgba(0,0,0,0.5); }
+
 /* --- INTRO EKRANI --- */
 #intro-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #050505; /* Oyunun zemin rengiyle uyumlu tam siyah */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999; /* Her şeyin üstünde olması için yüksek z-index */
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: #050505; 
+    display: flex; justify-content: center; align-items: center;
+    z-index: 9999;
 }
-
 .intro-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    opacity: 0; /* Başlangıçta görünmez, JS ile açacağız */
-    transform: scale(0.95); /* Hafif küçük başlasın, büyüyerek gelsin */
+    display: flex; flex-direction: column; align-items: center;
+    opacity: 0; transform: scale(0.95);
 }
-
 #intro-signature {
-    font-family: 'Great Vibes', cursive; /* İmza fontu */
-    font-size: 6rem;
-    color: #f0f0f0;
-    line-height: 1;
-    text-shadow: 0 0 25px rgba(255, 255, 255, 0.15);
-    margin-bottom: -15px; /* Games yazısına yaklaştırma */
+    font-family: 'Great Vibes', cursive; font-size: 6rem; color: #f0f0f0;
+    line-height: 1; text-shadow: 0 0 25px rgba(255, 255, 255, 0.15);
+    margin-bottom: -15px;
 }
-
 #intro-games {
-    font-family: 'Inter', sans-serif; /* Oyunun ana fontu */
-    font-size: 1.2rem;
-    font-weight: 700;
-    letter-spacing: 12px; /* Harf aralığını açarak modern bir görünüm */
-    color: #D4AF37; /* Oyunun altın rengi */
-    margin-left: 12px; /* Letter-spacing'i görsel olarak dengelemek için */
-    opacity: 0.8;
+    font-family: 'Inter', sans-serif; font-size: 1.2rem; font-weight: 700;
+    letter-spacing: 12px; color: #D4AF37; margin-left: 12px; opacity: 0.8;
 }
